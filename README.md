@@ -1,0 +1,2 @@
+# cetach-server-status
+Status
