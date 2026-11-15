@@ -181,6 +181,11 @@
     color: var(--text);
     cursor: pointer;
     transition: background-color .18s, border-color .18s, transform .1s, opacity .18s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
   .btn:hover { background: var(--accent-soft); border-color: var(--accent); }
   .btn:active { transform: scale(.98); }
@@ -213,6 +218,7 @@
     color: var(--muted);
     cursor: pointer;
     transition: background-color .18s, color .18s, opacity .18s;
+    white-space: nowrap;
   }
   .seg button:hover { color: var(--text); }
   .seg button.on { background: var(--accent); color: #fff; }
@@ -295,6 +301,18 @@
     font-size: 12px;
     color: var(--muted);
   }
+  .status-cta {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .status-cta-text { font-size: 12.5px; color: var(--muted); }
+  .status-cta .btn { flex: none; }
 
   /* ---------- 浏览视图：介绍 ---------- */
   .intro p { margin: 0 0 10px; font-size: 14px; color: var(--muted); }
@@ -343,8 +361,12 @@
     border-radius: 12px;
     background: var(--card-strong);
     border: 1px solid var(--line);
+    cursor: pointer;
+    transition: border-color .18s, background-color .18s, transform .1s;
   }
   .ann:last-child { margin-bottom: 0; }
+  .ann:hover { border-color: var(--accent); }
+  .ann:active { transform: scale(.995); }
   .ann-head {
     display: flex;
     align-items: baseline;
@@ -366,21 +388,27 @@
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
-  .ann-content { margin-top: 2px; color: var(--muted); }
-  .ann-content.clamped {
-    max-height: 240px;
-    overflow: hidden;
+  .ann-content {
     position: relative;
+    max-height: 150px;
+    overflow: hidden;
+    color: var(--muted);
   }
-  .ann-content.clamped::after {
+  .ann-content::after {
     content: "";
     position: absolute;
     left: 0; right: 0; bottom: 0;
-    height: 64px;
+    height: 60px;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--card-strong));
     pointer-events: none;
   }
-  .expand-btn { margin-top: 8px; }
+  .ann-more {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--accent);
+    font-weight: 600;
+  }
   .empty {
     padding: 30px 12px;
     text-align: center;
@@ -388,7 +416,7 @@
     color: var(--muted);
   }
 
-  /* ---------- 富文本（Markdown / HTML 渲染结果） ---------- */
+  /* ---------- 富文本 ---------- */
   .rich {
     font-size: 13.5px;
     line-height: 1.78;
@@ -437,6 +465,67 @@
   .rich hr { border: 0; border-top: 1px solid var(--line-strong); margin: 16px 0; }
   .rich del { opacity: .7; }
   .rich .ph { color: var(--muted); }
+
+  /* ---------- 状态面板视图 ---------- */
+  .panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .panel-head .section-title { margin: 0; }
+  .panel-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .iframe-wrap {
+    position: relative;
+    width: 100%;
+    height: min(80vh, 900px);
+    min-height: 460px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    background: var(--card-strong);
+  }
+  .iframe-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #fff;
+  }
+  [data-theme="dark"] .iframe-wrap iframe { background: #14171c; }
+  .iframe-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 24px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--muted);
+    background: var(--card-strong);
+    transition: opacity .3s ease;
+  }
+  .iframe-loading.gone { opacity: 0; pointer-events: none; }
+  .iframe-loading .spinner {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--line-strong);
+    border-top-color: var(--accent);
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .panel-tip {
+    margin: 12px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
 
   /* ---------- 编辑视图：工具栏 ---------- */
   .toolbar {
@@ -573,6 +662,15 @@
     font-size: 13.5px;
     color: var(--muted);
   }
+  .draft-note {
+    margin: 0 0 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
 
   /* ---------- 服务器信息折叠 ---------- */
   .server-box summary {
@@ -640,8 +738,8 @@
   .overlay.show { opacity: 1; }
   .modal {
     width: 100%;
-    max-width: 460px;
-    max-height: min(82vh, 660px);
+    max-width: 520px;
+    max-height: min(84vh, 700px);
     overflow-y: auto;
     padding: 22px;
     border-radius: 18px;
@@ -703,6 +801,7 @@
   @media (max-width: 860px) {
     .layout { grid-template-columns: minmax(0, 1fr); }
     .list-panel { max-height: 240px; overflow-y: auto; }
+    .iframe-wrap { height: 72vh; min-height: 380px; }
   }
   @media (max-width: 520px) {
     .wrap { padding: 18px 12px 56px; }
@@ -710,7 +809,7 @@
     .brand-text h1 { font-size: 16px; }
     .logo { width: 34px; height: 34px; border-radius: 10px; font-size: 16px; }
     .theme-btn { padding: 7px 13px; font-size: 12.5px; }
-    .view-seg button { padding: 6px 12px; font-size: 12.5px; }
+    .view-seg button { padding: 6px 11px; font-size: 12.5px; }
     .addr { font-size: 13px; padding: 6px 9px; }
     .stat-val { font-size: 16px; }
     .ann-head { flex-direction: column; align-items: flex-start; gap: 2px; }
@@ -722,6 +821,8 @@
     .modal { padding: 18px; }
     .modal-actions { flex-direction: column-reverse; }
     .modal-actions .btn { width: 100%; padding: 11px; }
+    .status-cta { flex-direction: column; align-items: stretch; }
+    .status-cta .btn { width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) {
     * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
@@ -743,6 +844,7 @@
     <div class="top-right">
       <div class="seg view-seg" id="viewSeg" role="group" aria-label="视图切换">
         <button type="button" data-view="browse" class="on">浏览</button>
+        <button type="button" data-view="status">状态</button>
         <button type="button" data-view="editor">编辑</button>
       </div>
       <button class="theme-btn" id="themeBtn" type="button" aria-label="切换主题">自动</button>
@@ -776,6 +878,10 @@
         </div>
       </div>
       <p class="status-note"><span id="updatedVal">尚未查询</span> · 状态由浏览器直接向公共查询接口请求，可能失败或有延迟</p>
+      <div class="status-cta">
+        <span class="status-cta-text">需要更详细的运行状态与性能数据？</span>
+        <button class="btn primary" id="goStatusPanel" type="button">打开状态面板</button>
+      </div>
     </section>
 
     <section class="card" aria-label="服务器介绍">
@@ -800,8 +906,41 @@
     </section>
   </main>
 
+  <!-- ============ 状态面板视图 ============ -->
+  <main id="viewStatus" hidden>
+    <section class="card" aria-label="服务器状态面板">
+      <div class="panel-head">
+        <h2 class="section-title">服务器状态面板</h2>
+        <div class="panel-actions">
+          <button class="btn tiny" id="reloadFrame" type="button">重新加载</button>
+          <a class="btn primary tiny" href="https://simp.host/status/simpfun"
+             target="_blank" rel="noopener noreferrer">新窗口打开</a>
+        </div>
+      </div>
+      <div class="iframe-wrap">
+        <div class="iframe-loading" id="iframeLoading">
+          <div class="spinner" aria-hidden="true"></div>
+          <span>正在加载状态面板…</span>
+        </div>
+        <iframe id="statusFrame" title="simp.host 服务器状态面板"
+                data-src="https://simp.host/status/simpfun"
+                referrerpolicy="no-referrer"
+                allow="clipboard-read; clipboard-write"></iframe>
+      </div>
+      <p class="panel-tip">
+        面板来源：simp.host/status/simpfun。若长时间空白，通常是对方站点设置了嵌入限制，
+        请使用右上角「新窗口打开」。
+      </p>
+    </section>
+  </main>
+
   <!-- ============ 编辑视图 ============ -->
   <main id="viewEditor" hidden>
+    <p class="draft-note">
+      这里是本机草稿区，修改只保存在当前浏览器，不会影响「浏览」页面。
+      完成后导出 announce.json 并覆盖服务器上的文件即可。
+    </p>
+
     <div class="toolbar">
       <button class="btn primary" id="btnNew" type="button">新建公告</button>
       <button class="btn" id="btnDelete" type="button" disabled>删除当前</button>
@@ -890,7 +1029,7 @@
 
   <footer class="footer">
     <p>CetaCh的纯生存服务器 · Minecraft 基岩版</p>
-    <p>编辑内容保存在本机浏览器，导出 announce.json 后放到状态页同目录即可生效</p>
+    <p>浏览页始终显示线上 announce.json 的内容；编辑页内容仅保存在本机</p>
   </footer>
 </div>
 
@@ -920,7 +1059,8 @@
   var CFG = {
     host: 'play.simpfun.cn',
     port: 11887,
-    version: '1.26.30.5'
+    version: '1.26.30.5',
+    statusPanel: 'https://simp.host/status/simpfun'
   };
 
   var DEFAULT_INTRO = [
@@ -930,7 +1070,7 @@
     '请勿破坏他人建筑、请勿偷窃、请勿使用任何破坏游戏平衡的作弊或模组。'
   ];
 
-  var STORE_KEY = 'cc_ann_data';
+  var STORE_KEY = 'cc_ann_draft';
   var STATUS_INTERVAL = 60000;
 
   var $ = function (id) { return document.getElementById(id); };
@@ -1020,7 +1160,6 @@
       .replace(/"/g, '&quot;');
   }
 
-  /* 日期显示：今天 / 昨天 / N 天前 / 完整日期 */
   function formatDate(dateStr) {
     if (!dateStr) return '';
     var d = new Date(dateStr);
@@ -1160,7 +1299,6 @@
     return out.join('\n');
   }
 
-  /* HTML 净化：移除脚本与事件属性 */
   function sanitizeHtml(html) {
     var box = document.createElement('div');
     box.innerHTML = String(html == null ? '' : html);
@@ -1197,23 +1335,26 @@
   }
 
   /* ============================================================
-     数据状态
+     数据模型
+     browse：线上 announce.json，只读，用于浏览页
+     draft ：本机草稿，仅用于编辑页
      ============================================================ */
-  var state = {
-    server: {
+  function emptyServer() {
+    return {
       name: 'CetaCh的纯生存服务器',
       address: CFG.host,
       port: CFG.port,
       version: CFG.version,
       intro: null
-    },
-    list: [],
-    currentId: null,
-    view: 'browse'
-  };
+    };
+  }
+
+  var browse = { server: emptyServer(), list: [] };
+  var draft = { server: emptyServer(), list: [], currentId: null };
+
   var currentFormat = 'markdown';
   var keyword = '';
-  var dataFromLocal = false;
+  var currentView = 'browse';
 
   function normalizeIntro(v) {
     if (Array.isArray(v)) return v.map(String).filter(function (s) { return s.trim(); });
@@ -1243,8 +1384,20 @@
     };
   }
 
-  function sortList() {
-    state.list.sort(function (a, b) {
+  function normalizeServer(s, fallback) {
+    var base = fallback || emptyServer();
+    if (!s || typeof s !== 'object') return base;
+    return {
+      name: s.name ? String(s.name) : base.name,
+      address: s.address ? String(s.address) : base.address,
+      port: Number(s.port) || base.port,
+      version: s.version ? String(s.version) : base.version,
+      intro: normalizeIntro(s.intro) || base.intro
+    };
+  }
+
+  function sortList(arr) {
+    arr.sort(function (a, b) {
       if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
       var ta = Date.parse(a.date), tb = Date.parse(b.date);
       var va = isNaN(ta) ? -Infinity : ta;
@@ -1255,50 +1408,55 @@
     });
   }
 
+  function parsePayload(d, baseServer) {
+    var srv = normalizeServer(d && d.server, baseServer);
+    var raw = [];
+    if (d && Array.isArray(d.announcements)) raw = d.announcements;
+    else if (Array.isArray(d)) raw = d;
+
+    var list = raw
+      .filter(function (x) { return x && typeof x === 'object'; })
+      .map(normalizeAnn);
+
+    sortList(list);
+    return { server: srv, list: list };
+  }
+
+  function cloneData(src) {
+    return {
+      server: {
+        name: src.server.name,
+        address: src.server.address,
+        port: src.server.port,
+        version: src.server.version,
+        intro: src.server.intro ? src.server.intro.slice() : null
+      },
+      list: src.list.map(function (a) {
+        return {
+          id: a.id,
+          title: a.title,
+          date: a.date,
+          format: a.format,
+          content: a.content,
+          pinned: a.pinned,
+          updatedAt: a.updatedAt
+        };
+      })
+    };
+  }
+
   function currentAnn() {
-    if (!state.currentId) return null;
-    for (var i = 0; i < state.list.length; i++) {
-      if (state.list[i].id === state.currentId) return state.list[i];
+    if (!draft.currentId) return null;
+    for (var i = 0; i < draft.list.length; i++) {
+      if (draft.list[i].id === draft.currentId) return draft.list[i];
     }
     return null;
   }
 
   /* ============================================================
-     数据加载
+     加载：浏览数据（线上）
      ============================================================ */
-  function applyData(d, fromLocal) {
-    dataFromLocal = !!fromLocal;
-
-    state.server = {
-      name: (d && d.server && d.server.name) ? String(d.server.name) : 'CetaCh的纯生存服务器',
-      address: (d && d.server && d.server.address) ? String(d.server.address) : CFG.host,
-      port: (d && d.server && Number(d.server.port)) ? Number(d.server.port) : CFG.port,
-      version: (d && d.server && d.server.version) ? String(d.server.version) : CFG.version,
-      intro: (d && d.server) ? normalizeIntro(d.server.intro) : null
-    };
-
-    var raw = [];
-    if (d && Array.isArray(d.announcements)) raw = d.announcements;
-    else if (Array.isArray(d)) raw = d;
-
-    state.list = raw
-      .filter(function (x) { return x && typeof x === 'object'; })
-      .map(normalizeAnn);
-
-    sortList();
-    renderAll();
-  }
-
-  function loadData() {
-    var raw = store.get(STORE_KEY, '');
-    if (raw) {
-      try {
-        var d = JSON.parse(raw);
-        applyData(d, true);
-        return Promise.resolve();
-      } catch (e) {}
-    }
-
+  function loadBrowseData() {
     return fetch('announce.json?v=' + Date.now(), { cache: 'no-store' })
       .then(function (r) {
         if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -1308,38 +1466,76 @@
         console.warn('[announce.json] 加载失败：', err);
         return null;
       })
-      .then(function (d) { applyData(d || {}, false); });
+      .then(function (d) {
+        var parsed = parsePayload(d || {}, emptyServer());
+        browse.server = parsed.server;
+        browse.list = parsed.list;
+      });
   }
 
   /* ============================================================
-     渲染：公共
+     加载：草稿（本机）
      ============================================================ */
-  function renderAll() {
-    renderServerInfo();
-    renderAnnouncements();
-    renderList();
-    fillServerForm();
-    ensureSelection();
+  function loadDraft() {
+    var raw = store.get(STORE_KEY, '');
+    if (raw) {
+      try {
+        var d = JSON.parse(raw);
+        var parsed = parsePayload(d, browse.server);
+        draft.server = parsed.server;
+        draft.list = parsed.list;
+        return;
+      } catch (e) {}
+    }
+    // 无本机草稿时，以线上数据作为初始草稿
+    var base = cloneData(browse);
+    draft.server = base.server;
+    draft.list = base.list;
   }
 
-  function renderIntro() {
+  function saveDraft() {
+    var payload = {
+      server: {
+        name: draft.server.name,
+        address: draft.server.address,
+        port: draft.server.port,
+        version: draft.server.version,
+        intro: draft.server.intro
+      },
+      announcements: draft.list.map(function (a) {
+        return {
+          id: a.id,
+          title: a.title,
+          date: a.date,
+          format: a.format,
+          content: a.content,
+          pinned: a.pinned,
+          updatedAt: a.updatedAt
+        };
+      })
+    };
+    store.set(STORE_KEY, JSON.stringify(payload));
+    flashSaved('草稿已保存到本机');
+  }
+
+  /* ============================================================
+     渲染：浏览视图
+     ============================================================ */
+  function renderBrowseServer() {
+    document.title = browse.server.name;
+    $('serverName').textContent = browse.server.name;
+    $('addrHost').textContent = browse.server.address;
+    $('addrPort').textContent = String(browse.server.port);
+    updateVersionDisplay(null, browse.server.version);
+
     var el = $('introBody');
     el.innerHTML = '';
-    var paras = (state.server.intro && state.server.intro.length) ? state.server.intro : DEFAULT_INTRO;
+    var paras = (browse.server.intro && browse.server.intro.length) ? browse.server.intro : DEFAULT_INTRO;
     paras.forEach(function (text) {
       var p = document.createElement('p');
       p.textContent = text;
       el.appendChild(p);
     });
-  }
-
-  function renderServerInfo() {
-    document.title = state.server.name;
-    $('serverName').textContent = state.server.name;
-    $('addrHost').textContent = state.server.address;
-    $('addrPort').textContent = String(state.server.port);
-    renderIntro();
-    updateVersionDisplay(null, state.server.version);
   }
 
   function updateVersionDisplay(actual, config) {
@@ -1362,27 +1558,24 @@
     }
   }
 
-  /* ============================================================
-     渲染：浏览视图公告
-     ============================================================ */
   function renderAnnouncements() {
     var wrap = $('annList');
     wrap.innerHTML = '';
 
     var q = keyword.trim().toLowerCase();
-    var items = state.list.filter(function (a) {
+    var items = browse.list.filter(function (a) {
       if (!q) return true;
       return (a.title + '\n' + a.content + '\n' + a.date).toLowerCase().indexOf(q) !== -1;
     });
 
     $('annCount').textContent = q
       ? '找到 ' + items.length + ' 条'
-      : '共 ' + state.list.length + ' 条';
+      : '共 ' + browse.list.length + ' 条';
 
     if (!items.length) {
       var empty = document.createElement('div');
       empty.className = 'empty';
-      empty.textContent = state.list.length ? '没有匹配的公告' : '暂无公告';
+      empty.textContent = browse.list.length ? '没有匹配的公告' : '暂无公告';
       wrap.appendChild(empty);
       return;
     }
@@ -1393,6 +1586,9 @@
   function makeAnnCard(a) {
     var item = document.createElement('article');
     item.className = 'ann';
+    item.setAttribute('role', 'button');
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('aria-label', '查看公告：' + (a.title || '无标题'));
 
     var head = document.createElement('div');
     head.className = 'ann-head';
@@ -1412,30 +1608,23 @@
 
     if (a.content) {
       var content = document.createElement('div');
-      content.className = 'ann-content rich clamped';
+      content.className = 'ann-content rich';
       content.innerHTML = renderAnnContent(a);
       item.appendChild(content);
 
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'btn tiny expand-btn';
-      btn.textContent = '展开全文';
-      btn.hidden = true;
-      item.appendChild(btn);
-
-      requestAnimationFrame(function () {
-        if (content.scrollHeight > content.clientHeight + 4) {
-          btn.hidden = false;
-        } else {
-          content.classList.remove('clamped');
-        }
-      });
-
-      btn.addEventListener('click', function () {
-        var clamped = content.classList.toggle('clamped');
-        btn.textContent = clamped ? '展开全文' : '收起';
-      });
+      var more = document.createElement('span');
+      more.className = 'ann-more';
+      more.textContent = '查看详情';
+      item.appendChild(more);
     }
+
+    item.addEventListener('click', function () { openAnnDetail(a); });
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openAnnDetail(a);
+      }
+    });
 
     return item;
   }
@@ -1446,15 +1635,15 @@
   });
 
   /* ============================================================
-     渲染：编辑器
+     渲染：编辑视图
      ============================================================ */
   function renderList() {
     var box = $('annListEditor');
     box.innerHTML = '';
 
-    $('annCountEditor').textContent = state.list.length ? state.list.length + ' 条' : '';
+    $('annCountEditor').textContent = draft.list.length ? draft.list.length + ' 条' : '';
 
-    if (!state.list.length) {
+    if (!draft.list.length) {
       var empty = document.createElement('div');
       empty.className = 'list-empty';
       empty.textContent = '还没有公告，点击「新建公告」开始';
@@ -1462,10 +1651,10 @@
       return;
     }
 
-    state.list.forEach(function (a) {
+    draft.list.forEach(function (a) {
       var btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'ann-item' + (a.id === state.currentId ? ' active' : '');
+      btn.className = 'ann-item' + (a.id === draft.currentId ? ' active' : '');
       btn.setAttribute('data-id', a.id);
 
       var t = document.createElement('span');
@@ -1484,6 +1673,14 @@
       btn.addEventListener('click', function () { selectAnn(a.id); });
       box.appendChild(btn);
     });
+  }
+
+  function fillServerForm() {
+    $('sName').value = draft.server.name;
+    $('sAddr').value = draft.server.address;
+    $('sPort').value = draft.server.port;
+    $('sVer').value = draft.server.version;
+    $('sIntro').value = (draft.server.intro || []).join('\n');
   }
 
   var previewTimer = null;
@@ -1532,7 +1729,7 @@
   }
 
   function clearEditor() {
-    state.currentId = null;
+    draft.currentId = null;
     $('fTitle').value = '';
     $('fDate').value = '';
     $('fContent').value = '';
@@ -1543,12 +1740,12 @@
 
   function selectAnn(id) {
     var a = null;
-    for (var i = 0; i < state.list.length; i++) {
-      if (state.list[i].id === id) { a = state.list[i]; break; }
+    for (var i = 0; i < draft.list.length; i++) {
+      if (draft.list[i].id === id) { a = draft.list[i]; break; }
     }
     if (!a) { clearEditor(); renderList(); return; }
 
-    state.currentId = id;
+    draft.currentId = id;
     $('fTitle').value = a.title;
     $('fDate').value = a.date;
     setFormat(a.format);
@@ -1561,12 +1758,12 @@
 
   function ensureSelection() {
     if (currentAnn()) return;
-    if (state.list.length) selectAnn(state.list[0].id);
+    if (draft.list.length) selectAnn(draft.list[0].id);
     else clearEditor();
   }
 
   /* ============================================================
-     编辑事件
+     编辑事件（只作用于草稿）
      ============================================================ */
   function onEdit() {
     var a = currentAnn();
@@ -1580,7 +1777,6 @@
 
     schedulePreview();
     renderList();
-    renderAnnouncements();
     scheduleSave();
   }
 
@@ -1607,12 +1803,11 @@
       pinned: false,
       updatedAt: Date.now()
     };
-    state.list.push(a);
-    sortList();
-    state.currentId = a.id;
-    save();
+    draft.list.push(a);
+    sortList(draft.list);
+    draft.currentId = a.id;
+    saveDraft();
     renderList();
-    renderAnnouncements();
     selectAnn(a.id);
     $('fTitle').focus();
   }
@@ -1622,45 +1817,28 @@
     if (!a) return;
     if (!confirm('确定删除公告「' + (a.title || '无标题') + '」？此操作不可撤销。')) return;
 
-    var idx = state.list.indexOf(a);
-    if (idx !== -1) state.list.splice(idx, 1);
+    var idx = draft.list.indexOf(a);
+    if (idx !== -1) draft.list.splice(idx, 1);
 
-    save();
-    renderAnnouncements();
+    saveDraft();
 
-    if (state.list.length) selectAnn(state.list[0].id);
+    if (draft.list.length) selectAnn(draft.list[0].id);
     else { clearEditor(); renderList(); }
   }
 
   $('btnNew').addEventListener('click', newAnn);
   $('btnDelete').addEventListener('click', deleteCurrent);
 
-  /* ============================================================
-     服务器信息表单
-     ============================================================ */
-  function fillServerForm() {
-    $('sName').value = state.server.name;
-    $('sAddr').value = state.server.address;
-    $('sPort').value = state.server.port;
-    $('sVer').value = state.server.version;
-    $('sIntro').value = (state.server.intro || []).join('\n');
-  }
-
+  /* 服务器信息表单（只作用于草稿） */
   function readServerForm() {
-    state.server.name = $('sName').value.trim() || 'CetaCh的纯生存服务器';
-    state.server.address = $('sAddr').value.trim() || CFG.host;
-    state.server.port = parseInt($('sPort').value, 10) || CFG.port;
-    state.server.version = $('sVer').value.trim() || CFG.version;
-    state.server.intro = $('sIntro').value
+    draft.server.name = $('sName').value.trim() || 'CetaCh的纯生存服务器';
+    draft.server.address = $('sAddr').value.trim() || CFG.host;
+    draft.server.port = parseInt($('sPort').value, 10) || CFG.port;
+    draft.server.version = $('sVer').value.trim() || CFG.version;
+    draft.server.intro = $('sIntro').value
       .split('\n')
       .map(function (s) { return s.trim(); })
       .filter(Boolean);
-
-    document.title = state.server.name;
-    $('serverName').textContent = state.server.name;
-    $('addrHost').textContent = state.server.address;
-    $('addrPort').textContent = String(state.server.port);
-    renderIntro();
 
     scheduleSave();
   }
@@ -1670,46 +1848,14 @@
   });
 
   /* ============================================================
-     保存 / 导出 / 导入
+     保存提示
      ============================================================ */
   var saveTimer = null;
   var tipTimer = null;
 
-  function serialize() {
-    return JSON.stringify({
-      server: {
-        name: state.server.name,
-        address: state.server.address,
-        port: state.server.port,
-        version: state.server.version,
-        intro: state.server.intro
-      },
-      announcements: state.list.map(function (a) {
-        return {
-          id: a.id,
-          title: a.title,
-          date: a.date,
-          format: a.format,
-          content: a.content,
-          pinned: a.pinned,
-          updatedAt: a.updatedAt
-        };
-      })
-    });
-  }
-
-  function save() {
-    clearTimeout(saveTimer);
-    store.set(STORE_KEY, serialize());
-    flashSaved('已保存到本机');
-  }
-
   function scheduleSave() {
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(function () {
-      store.set(STORE_KEY, serialize());
-      flashSaved('已保存到本机');
-    }, 420);
+    saveTimer = setTimeout(saveDraft, 420);
   }
 
   function flashSaved(text) {
@@ -1720,16 +1866,19 @@
     tipTimer = setTimeout(function () { tip.classList.remove('on'); }, 1600);
   }
 
+  /* ============================================================
+     导出 / 导入 / 载入线上
+     ============================================================ */
   function buildExport() {
     return {
       server: {
-        name: state.server.name,
-        address: state.server.address,
-        port: state.server.port,
-        version: state.server.version,
-        intro: state.server.intro
+        name: draft.server.name,
+        address: draft.server.address,
+        port: draft.server.port,
+        version: draft.server.version,
+        intro: draft.server.intro
       },
-      announcements: state.list.map(function (a) {
+      announcements: draft.list.map(function (a) {
         var item = {
           id: a.id,
           title: a.title,
@@ -1759,7 +1908,7 @@
   }
 
   $('btnExport').addEventListener('click', function () {
-    if (!state.list.length && !confirm('当前没有任何公告，仍要导出吗？')) return;
+    if (!draft.list.length && !confirm('当前没有任何公告，仍要导出吗？')) return;
     download(JSON.stringify(buildExport(), null, 2), 'announce.json');
   });
 
@@ -1790,16 +1939,23 @@
     else if (Array.isArray(d)) arr = d;
     if (!arr) throw new Error('未找到 announcements 数组');
 
-    if (state.list.length &&
-        !confirm('导入将覆盖当前 ' + state.list.length + ' 条公告，确定继续？')) return;
+    if (draft.list.length &&
+        !confirm('导入将覆盖当前草稿中的 ' + draft.list.length + ' 条公告，确定继续？')) return;
 
-    applyData(d, true);
-    save();
-    flashSaved('已导入并保存');
+    var parsed = parsePayload(d, draft.server);
+    draft.server = parsed.server;
+    draft.list = parsed.list;
+    draft.currentId = null;
+
+    saveDraft();
+    fillServerForm();
+    renderList();
+    ensureSelection();
+    flashSaved('已导入并保存草稿');
   }
 
   $('btnReload').addEventListener('click', function () {
-    if (!confirm('将从线上 announce.json 重新载入，并清除本机保存的编辑内容。继续？')) return;
+    if (!confirm('将用线上 announce.json 覆盖本机草稿，当前未导出的修改会丢失。继续？')) return;
 
     fetch('announce.json?v=' + Date.now(), { cache: 'no-store' })
       .then(function (r) {
@@ -1807,8 +1963,15 @@
         return r.json();
       })
       .then(function (d) {
-        store.remove(STORE_KEY);
-        applyData(d || {}, false);
+        var parsed = parsePayload(d || {}, emptyServer());
+        draft.server = parsed.server;
+        draft.list = parsed.list;
+        draft.currentId = null;
+
+        saveDraft();
+        fillServerForm();
+        renderList();
+        ensureSelection();
         flashSaved('已载入线上数据');
       })
       .catch(function (err) {
@@ -1884,14 +2047,25 @@
     }
   });
 
+  function openAnnDetail(a) {
+    openModal({
+      tag: '公告详情',
+      title: a.title,
+      date: a.date,
+      html: renderAnnContent(a) || '<p>（无内容）</p>',
+      showDismiss: false,
+      onOk: function () {}
+    });
+  }
+
   /* ============================================================
-     启动弹窗流程
+     启动弹窗流程（只用浏览数据）
      ============================================================ */
   function showIntro(next) {
-    var paras = (state.server.intro && state.server.intro.length) ? state.server.intro : DEFAULT_INTRO;
+    var paras = (browse.server.intro && browse.server.intro.length) ? browse.server.intro : DEFAULT_INTRO;
     openModal({
       tag: '服务器介绍',
-      title: state.server.name,
+      title: browse.server.name,
       date: '',
       content: paras.join('\n\n'),
       showDismiss: false,
@@ -1901,8 +2075,8 @@
 
   function showLatestAnnouncement() {
     var latest = null;
-    for (var i = 0; i < state.list.length; i++) {
-      if (!isDismissed(state.list[i].id)) { latest = state.list[i]; break; }
+    for (var i = 0; i < browse.list.length; i++) {
+      if (!isDismissed(browse.list[i].id)) { latest = browse.list[i]; break; }
     }
     if (!latest) return;
 
@@ -1918,7 +2092,7 @@
   }
 
   function boot() {
-    if (state.view === 'editor') return;
+    if (currentView !== 'browse') return;
 
     if (!store.get('cc_visited', '')) {
       showIntro(function () {
@@ -1947,7 +2121,7 @@
 
   function queryMcStatusIO() {
     var url = 'https://api.mcstatus.io/v2/status/bedrock/' +
-              encodeURIComponent(CFG.host) + ':' + CFG.port;
+              encodeURIComponent(browse.server.address) + ':' + browse.server.port;
     return fetch(url, { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -1965,7 +2139,7 @@
 
   function queryMcsrvstat() {
     var url = 'https://api.mcsrvstat.us/bedrock/3/' +
-              encodeURIComponent(CFG.host) + ':' + CFG.port;
+              encodeURIComponent(browse.server.address) + ':' + browse.server.port;
     return fetch(url, { cache: 'no-store' })
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -2009,7 +2183,7 @@
         if (!r) {
           setPill('error', '查询失败');
           $('updatedVal').textContent = '查询失败';
-          updateVersionDisplay(null, state.server.version);
+          updateVersionDisplay(null, browse.server.version);
           return;
         }
 
@@ -2022,7 +2196,7 @@
         }
         $('maxVal').textContent = (r.max != null) ? String(r.max) : '—';
 
-        updateVersionDisplay(r.version || null, state.server.version);
+        updateVersionDisplay(r.version || null, browse.server.version);
 
         var now = new Date();
         $('updatedVal').textContent = '更新于 ' + now.toLocaleTimeString('zh-CN', { hour12: false });
@@ -2032,7 +2206,7 @@
   $('refreshBtn').addEventListener('click', function () { refreshStatus(); });
 
   setInterval(function () {
-    if (!document.hidden && state.view === 'browse') refreshStatus();
+    if (!document.hidden && currentView === 'browse') refreshStatus();
   }, STATUS_INTERVAL);
 
   /* ============================================================
@@ -2047,7 +2221,7 @@
   }
 
   $('copyBtn').addEventListener('click', function () {
-    var text = state.server.address + ':' + state.server.port;
+    var text = browse.server.address + ':' + browse.server.port;
 
     function fallback() {
       var ta = document.createElement('textarea');
@@ -2071,28 +2245,77 @@
   });
 
   /* ============================================================
+     状态面板 iframe
+     ============================================================ */
+  var frame = $('statusFrame');
+  var frameLoading = $('iframeLoading');
+  var frameLoaded = false;
+  var frameTimer = null;
+
+  function loadFrame() {
+    if (frameLoaded) return;
+    frameLoaded = true;
+
+    clearTimeout(frameTimer);
+    frameLoading.classList.remove('gone');
+    frameLoading.innerHTML =
+      '<div class="spinner" aria-hidden="true"></div><span>正在加载状态面板…</span>';
+
+    frame.addEventListener('load', onFrameLoad, { once: true });
+    frame.src = frame.getAttribute('data-src');
+
+    frameTimer = setTimeout(function () {
+      if (!frameLoading.classList.contains('gone')) {
+        frameLoading.innerHTML =
+          '<span>加载较慢或对方站点禁止嵌入。</span>' +
+          '<a class="btn tiny primary" href="' + CFG.statusPanel +
+          '" target="_blank" rel="noopener noreferrer">新窗口打开</a>';
+      }
+    }, 9000);
+  }
+
+  function onFrameLoad() {
+    clearTimeout(frameTimer);
+    frameLoading.classList.add('gone');
+  }
+
+  $('reloadFrame').addEventListener('click', function () {
+    frameLoaded = false;
+    frame.removeAttribute('src');
+    loadFrame();
+  });
+
+  /* ============================================================
      视图切换
      ============================================================ */
   var viewBtns = $('viewSeg').querySelectorAll('button');
 
   function switchView(v) {
-    state.view = v === 'editor' ? 'editor' : 'browse';
+    currentView = (v === 'editor' || v === 'status') ? v : 'browse';
 
-    $('viewBrowse').hidden = state.view !== 'browse';
-    $('viewEditor').hidden = state.view !== 'editor';
+    $('viewBrowse').hidden = currentView !== 'browse';
+    $('viewStatus').hidden = currentView !== 'status';
+    $('viewEditor').hidden = currentView !== 'editor';
 
     for (var i = 0; i < viewBtns.length; i++) {
-      viewBtns[i].classList.toggle('on', viewBtns[i].getAttribute('data-view') === state.view);
+      viewBtns[i].classList.toggle('on', viewBtns[i].getAttribute('data-view') === currentView);
     }
 
-    if (state.view === 'editor') {
+    if (currentView === 'editor') {
       renderList();
       ensureSelection();
+    } else if (currentView === 'status') {
+      loadFrame();
     } else {
       renderAnnouncements();
     }
 
     try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) { window.scrollTo(0, 0); }
+
+    if (history.replaceState) {
+      var h = currentView === 'browse' ? '#' : '#' + currentView;
+      history.replaceState(null, '', h);
+    }
   }
 
   for (var vi = 0; vi < viewBtns.length; vi++) {
@@ -2101,14 +2324,27 @@
     });
   }
 
+  $('goStatusPanel').addEventListener('click', function () { switchView('status'); });
+
   if (location.hash === '#editor') switchView('editor');
+  else if (location.hash === '#status') switchView('status');
 
   /* ============================================================
      初始化
      ============================================================ */
-  loadData().then(function () {
+  loadBrowseData().then(function () {
+    renderBrowseServer();
+    renderAnnouncements();
+
+    loadDraft();
+    fillServerForm();
+    renderList();
+    ensureSelection();
+
     refreshStatus();
     boot();
+
+    if (currentView === 'status') loadFrame();
   });
 
 })();
