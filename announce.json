@@ -13,6 +13,14 @@
   },
   "announcements": [
     {
+      "id": "amwhliylr8try",
+      "title": "客户端已加入开发计划！",
+      "date": "2026-11-15",
+      "format": "markdown",
+      "content": "为了更好的服务器体验，CeSur客户端已经加入开发计划！有服务器更新自动通知，服务器断线通知，一键启动Minecraft等功能！\n预计于**3周内**开发完毕，敬请期待！\n> 预览版其实已经出了，但是bug一堆，暂不发布",
+      "contentHtml": "<p>为了更好的服务器体验，CeSur客户端已经加入开发计划！有服务器更新自动通知，服务器断线通知，一键启动Minecraft等功能！<br>预计于<strong>3周内</strong>开发完毕，敬请期待！</p>\n<blockquote>预览版其实已经出了，但是bug一堆，暂不发布</blockquote>"
+    },
+    {
       "id": "amwgjagkoekve",
       "title": "状态查询页上线！",
       "date": "2026-11-14",
