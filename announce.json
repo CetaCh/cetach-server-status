@@ -1,6 +1,6 @@
 {
   "server": {
-    "name": "CetaCh的纯生存服务器",
+    "name": "CeSur",
     "address": "play.simpfun.cn",
     "port": 11887,
     "version": "1.26.30.5",
@@ -12,6 +12,14 @@
     ]
   },
   "announcements": [
+    {
+      "id": "amwizpitvhyzv",
+      "title": "恭喜 CeSur 客户端正式上线！",
+      "date": "2026-11-16",
+      "format": "markdown",
+      "content": "> 请前往QQ群下载安卓客户端，苹果客户端已在开发中\n### **新功能**\n- 自动在后台提醒服务器公告更新，不用再反复查看\n- 支持一键启动**对应版本的Minecraft客户端**，在客户端版本*不正确时*自动提醒\n- **缓解Github网页加载慢的问题**，UI不再需要等待，公告依赖于Github，暂时无法解决\n### **注意**\n目前该软件处于测试状态，可能会有**不稳定的bug出现**，如果能**稳定复现**，请及时上报至`CetaCh（QQ号3645017634）`或者`github.com/cetach/cetach-server-status`的issue中\n\n## CeSur服务器开发团队感谢您的测试！\n\n",
+      "contentHtml": "<blockquote>请前往QQ群下载安卓客户端，苹果客户端已在开发中</blockquote>\n<h3><strong>新功能</strong></h3>\n<ul><li>自动在后台提醒服务器公告更新，不用再反复查看</li><li>支持一键启动<strong>对应版本的Minecraft客户端</strong>，在客户端版本<em>不正确时</em>自动提醒</li><li><strong>缓解Github网页加载慢的问题</strong>，UI不再需要等待，公告依赖于Github，暂时无法解决</li></ul>\n<h3><strong>注意</strong></h3>\n<p>目前该软件处于测试状态，可能会有<strong>不稳定的bug出现</strong>，如果能<strong>稳定复现</strong>，请及时上报至<code>CetaCh（QQ号3645017634）</code>或者<code>github.com/cetach/cetach-server-status</code>的issue中</p>\n<h2>CeSur服务器开发团队感谢您的测试！</h2>"
+    },
     {
       "id": "amwhliylr8try",
       "title": "客户端已加入开发计划！",
